@@ -19,8 +19,8 @@ class server {
    public:
     int m_user = 0;
     int m_token = 0;
-    std::string m_server = "209.59.191.76";
-    int m_port = 17093;
+    std::string m_server = "213.179.209.168";
+    int m_port = 17276;
     int m_proxyport = 17191;
     world m_world;
     bool start();
