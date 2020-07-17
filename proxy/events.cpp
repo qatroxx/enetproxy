@@ -126,6 +126,15 @@ bool events::out::generictext(std::string packet) {
                 }
             }
             return true;
+        } else if (find_command(chat, "wrench ")) {
+            std::string name = chat.substr(6);
+            std::string username = ".";
+            for (auto& player : g_server->m_world.players) {
+                auto name_2 = player.name.substr(2);
+                std::transform(name_2.begin(), name_2.end(), name_2.begin(), ::tolower);
+                    g_server->send(false, "action|wrench\n|netid|" + std::to_string(player.netid));
+            }
+            return true;
         } else if (find_command(chat, "proxy")) {
             gt::send_log(
                 "/legal (recovers surgery), /tp [name] (teleports to a player in the world), /ghost (toggles ghost, you wont move for others when its enabled), /uid "
@@ -314,6 +323,18 @@ bool events::in::variantlist(gameupdatepacket_t* packet) {
                 }
                 if (var.get("mstate") == "1" || var.get("smstate") == "1")
                     ply.mod = true;
+                variantlist_t gladiator{ "OnAddNotification" };
+                    gladiator[1] = "interface/science_button.rttex";
+                    gladiator[2] = "Mod here!";
+                    gladiator[3] = "audio/hub_open.wav", 0;
+                    g_server->send(true, gladiator, -1);
+                }
+                    variantlist_t gladiator{ "OnAddNotification" };
+                    gladiator[1] = "interface/science_button.rttex";
+                    gladiator[2] = "Mod here!";
+                    gladiator[3] = "audio/hub_open.wav", 0;
+                    g_server->send(true, gladiator, -1);
+                }
                 ply.userid = var.get_int("userID");
                 ply.netid = var.get_int("netID");
                 if (meme.find("type|local") != -1) {
